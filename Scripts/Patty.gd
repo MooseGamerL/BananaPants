@@ -4,6 +4,13 @@ extends Area2D
 enum CookState { RAW, RARE, MEDIUM, WELLDONE, CONGRATULATION }
 enum Side { TOP, BOTTOM }
 const STATE_NAMES := ["RAW", "RARE", "MEDIUM", "WELLDONE", "CONGRATULATION"]
+const STATE_COLOURS := [
+	Color(0.90, 0.55, 0.55), #Raw
+	Color(0.80, 0.42, 0.34), #Rare
+	Color(0.60, 0.35, 0.24), #Medium
+	Color(0.40, 0.10, 0.10), #Well Done
+	Color(0.10, 0.10, 0.10), #Congratulation
+]
 
 var top_state: int = CookState.RAW
 var bottom_state: int = CookState.RAW
@@ -18,10 +25,12 @@ var offset := Vector2.ZERO
 var zone: DropZone = null
 
 @onready var cook_timer: Timer = $CookTimer
+@onready var visual: ColorRect = $Visual
 
 func _ready() -> void:
 	home = global_position
 	cook_timer.timeout.connect(_on_cook_tick)
+	update_visual()
 
 func _on_cook_tick() -> void:
 	if not on_grill:
@@ -31,6 +40,13 @@ func _on_cook_tick() -> void:
 	else:
 		top_state = min(top_state + 1, CookState.CONGRATULATION)
 	_print_state("cooking larry")
+	update_visual()
+
+func _down_state() -> int:
+	return bottom_state if facing_down == Side.BOTTOM else top_state
+
+func update_visual() -> void:
+	visual.color = STATE_COLOURS[_down_state()]
 
 func _on_area_entered(area: Area2D) -> void:
 	if area is DropZone:
