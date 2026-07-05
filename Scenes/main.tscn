@@ -49,6 +49,7 @@ color = Color(1, 0.132984, 0.218307, 1)
 script = ExtResource("1_jjgbg")
 
 [node name="Visible" type="ColorRect" parent="Bins/Patty Bin/Patty"]
+z_index = 100
 offset_left = 37.0
 offset_top = 33.0
 offset_right = 77.0
@@ -56,9 +57,14 @@ offset_bottom = 73.0
 color = Color(0.763202, 0, 0.133048, 1)
 
 [node name="Shape" type="CollisionShape2D" parent="Bins/Patty Bin/Patty"]
+z_index = 100
 position = Vector2(57, 53)
 scale = Vector2(2, 2)
 shape = SubResource("RectangleShape2D_bo1nx")
+
+[node name="CookTimer" type="Timer" parent="Bins/Patty Bin/Patty"]
+wait_time = 3.0
+autostart = true
 
 [node name="Bun Bin" type="ColorRect" parent="Bins"]
 layout_mode = 0

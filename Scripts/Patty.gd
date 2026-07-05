@@ -17,8 +17,20 @@ var dragging := false
 var offset := Vector2.ZERO
 var zone: DropZone = null
 
+@onready var cook_timer: Timer = $CookTimer
+
 func _ready() -> void:
 	home = global_position
+	cook_timer.timeout.connect(_on_cook_tick)
+
+func _on_cook_tick() -> void:
+	if not on_grill:
+		return
+	if facing_down == Side.BOTTOM:
+		bottom_state = min(bottom_state + 1, CookState.CONGRATULATION)
+	else:
+		top_state = min(top_state + 1, CookState.CONGRATULATION)
+	_print_state("cooking larry")
 
 func _on_area_entered(area: Area2D) -> void:
 	if area is DropZone:
@@ -56,6 +68,9 @@ func _drop() -> void:
 				_print_state("rubbish")
 			_:
 				on_grill = false
-				
-func _print_state() -> void:
-	pass
+				print("droppedidk")
+
+func _print_state(tag: String) -> void:
+	var down := "bottom" if facing_down == Side.BOTTOM else "top"
+	print ("[%s] top=%s bottom=%s (down=%s, on_grill=%s)" % [
+		tag, STATE_NAMES[top_state], STATE_NAMES[bottom_state], down, on_grill])
