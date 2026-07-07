@@ -1,6 +1,4 @@
-extends Area2D
-
-const DRAG_THRESHOLD := 6.0
+extends Draggable
 
 #Cooking states and variables
 enum CookState { RAW, RARE, MEDIUM, WELLDONE, CONGRATULATION }
@@ -18,20 +16,10 @@ var bottom_state: int = CookState.RAW
 var is_flipped = false
 var on_grill := false
 
-#Drag variables
-const DRAG_Z := 100
-var home: Vector2
-var pressed := false
-var dragging := false
-var press_mouse := Vector2.ZERO
-var offset := Vector2.ZERO
-var zone: DropZone = null
-
 @onready var cook_timer: Timer = $CookTimer
 @onready var visual: ColorRect = $Visual
 
-func _ready() -> void:
-	home = global_position
+func ready_extra() -> void:
 	cook_timer.timeout.connect(_on_cook_tick)
 	update_visual()
 
@@ -56,52 +44,27 @@ func _down_state() -> int:
 func update_visual() -> void:
 	visual.color = STATE_COLOURS[_down_state()]
 
-func _on_area_entered(area: Area2D) -> void:
-	if area is DropZone:
-		zone = area
-
-func _on_area_exited(area: Area2D) -> void:
-	if area == zone:
-		zone = null
-
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.pressed and MouseUtil.mouse_over(self):
-			pressed = true
-			dragging = false
-			press_mouse = get_global_mouse_position()
-			get_viewport().set_input_as_handled()
-		elif not event.pressed and pressed:
-			if dragging:
-				dragging = false
-				z_index = 0
-				_drop()
-			elif on_grill:
-				flip()
-			pressed = false
-
-func _physics_process(_delta: float) -> void:
-	if pressed and not dragging:
-		if get_global_mouse_position().distance_to(press_mouse) > DRAG_THRESHOLD:
-			dragging = true
+func on_dropped_on_zone(dropped: DropZone) -> void: 
+	match dropped.type:
+		DropZone.Type.GRILL:
+			on_grill = true
+			_print_state("on grill")
+		DropZone.Type.RUBBISH:
 			on_grill = false
-			z_index = DRAG_Z
-			offset = global_position - get_global_mouse_position()
-	if dragging:
-		global_position = get_global_mouse_position() + offset
+			_print_state("rubbish")
+		_:
+			return_home()
 
-func _drop() -> void:
-	if zone:
-		match zone.type:
-			DropZone.Type.GRILL:
-				on_grill = true
-				_print_state("on grill")
-			DropZone.Type.RUBBISH:
-				on_grill = false
-				_print_state("rubbish")
-			_:
-				on_grill = false
-				print("droppedidk")
+func on_dropped_outside() -> void:
+	on_grill = false
+	_print_state("backto bin")
+
+func on_drag_started() -> void: 
+	on_grill = false
+
+func on_clicked() -> void:
+	if on_grill:
+		flip()
 
 func _print_state(tag: String) -> void:
 	var down := "top" if is_flipped else "bottom"

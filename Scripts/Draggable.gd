@@ -1,0 +1,67 @@
+class_name Draggable
+extends Area2D
+
+const DRAG_Z := 100
+const DRAG_THRESHOLD := 6.0
+
+var home: Vector2
+var pressed := false
+var dragging := false
+var press_mouse := Vector2.ZERO
+var offset := Vector2.ZERO
+var zone: DropZone = null
+
+func _ready() -> void:
+	home = global_position
+	area_entered.connect(_on_area_entered)
+	area_exited.connect(_on_area_exited)
+	ready_extra()
+
+func _on_area_entered(area: Area2D) -> void:
+	if area is DropZone:
+		zone = area
+
+func _on_area_exited(area: Area2D) -> void:
+	if area == zone:
+		zone = null
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed and MouseUtil.mouse_over(self):
+			pressed = true
+			dragging = false
+			press_mouse = get_global_mouse_position()
+			get_viewport().set_input_as_handled()
+		elif not event.pressed and pressed:
+			if dragging:
+				dragging = false
+				z_index = 0
+				_drop()
+			else:
+				on_clicked()
+			pressed = false
+
+func _physics_process(_delta: float) -> void:
+	if pressed and not dragging:
+		if get_global_mouse_position().distance_to(press_mouse) > DRAG_THRESHOLD:
+			dragging = true
+			z_index = DRAG_Z
+			offset = global_position - get_global_mouse_position()
+			on_drag_started()
+	if dragging:
+		global_position = get_global_mouse_position() + offset
+
+func _drop() -> void:
+	if zone:
+		on_dropped_on_zone(zone)
+	else:
+		on_dropped_outside()
+
+func return_home() -> void:
+	global_position = home
+
+func ready_extra() -> void: pass
+func on_drag_started() -> void: pass
+func on_clicked() -> void: pass
+func on_dropped_on_zone(dropped: DropZone) -> void: pass
+func on_dropped_outside() -> void: pass
