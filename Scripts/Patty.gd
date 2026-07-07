@@ -1,8 +1,9 @@
 extends Area2D
 
+const DRAG_THRESHOLD := 6.0
+
 #Cooking states and variables
 enum CookState { RAW, RARE, MEDIUM, WELLDONE, CONGRATULATION }
-enum Side { TOP, BOTTOM }
 const STATE_NAMES := ["RAW", "RARE", "MEDIUM", "WELLDONE", "CONGRATULATION"]
 const STATE_COLOURS := [
 	Color(0.90, 0.55, 0.55), #Raw
@@ -14,13 +15,15 @@ const STATE_COLOURS := [
 
 var top_state: int = CookState.RAW
 var bottom_state: int = CookState.RAW
-var facing_down: int = Side.BOTTOM
+var is_flipped = false
 var on_grill := false
 
 #Drag variables
 const DRAG_Z := 100
 var home: Vector2
+var pressed := false
 var dragging := false
+var press_mouse := Vector2.ZERO
 var offset := Vector2.ZERO
 var zone: DropZone = null
 
@@ -32,18 +35,23 @@ func _ready() -> void:
 	cook_timer.timeout.connect(_on_cook_tick)
 	update_visual()
 
+func flip() -> void:
+	is_flipped = not is_flipped
+	_print_state("Flipped")
+	update_visual()
+
 func _on_cook_tick() -> void:
 	if not on_grill:
 		return
-	if facing_down == Side.BOTTOM:
-		bottom_state = min(bottom_state + 1, CookState.CONGRATULATION)
-	else:
+	if is_flipped:
 		top_state = min(top_state + 1, CookState.CONGRATULATION)
+	else:
+		bottom_state = min(bottom_state + 1, CookState.CONGRATULATION)
 	_print_state("cooking larry")
 	update_visual()
 
 func _down_state() -> int:
-	return bottom_state if facing_down == Side.BOTTOM else top_state
+	return top_state if is_flipped else bottom_state
 
 func update_visual() -> void:
 	visual.color = STATE_COLOURS[_down_state()]
@@ -59,17 +67,26 @@ func _on_area_exited(area: Area2D) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed and MouseUtil.mouse_over(self):
-			dragging = true
-			on_grill = false
-			offset = global_position - get_global_mouse_position()
-			z_index = DRAG_Z
-			get_viewport().set_input_as_handled()
-		elif not event.pressed and dragging:
+			pressed = true
 			dragging = false
-			z_index = 0
-			_drop()
+			press_mouse = get_global_mouse_position()
+			get_viewport().set_input_as_handled()
+		elif not event.pressed and pressed:
+			if dragging:
+				dragging = false
+				z_index = 0
+				_drop()
+			elif on_grill:
+				flip()
+			pressed = false
 
 func _physics_process(_delta: float) -> void:
+	if pressed and not dragging:
+		if get_global_mouse_position().distance_to(press_mouse) > DRAG_THRESHOLD:
+			dragging = true
+			on_grill = false
+			z_index = DRAG_Z
+			offset = global_position - get_global_mouse_position()
 	if dragging:
 		global_position = get_global_mouse_position() + offset
 
@@ -87,6 +104,6 @@ func _drop() -> void:
 				print("droppedidk")
 
 func _print_state(tag: String) -> void:
-	var down := "bottom" if facing_down == Side.BOTTOM else "top"
+	var down := "top" if is_flipped else "bottom"
 	print ("[%s] top=%s bottom=%s (down=%s, on_grill=%s)" % [
 		tag, STATE_NAMES[top_state], STATE_NAMES[bottom_state], down, on_grill])
