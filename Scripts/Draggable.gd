@@ -10,6 +10,7 @@ var dragging := false
 var press_mouse := Vector2.ZERO
 var offset := Vector2.ZERO
 var zone: DropZone = null
+var plate: Plate = null
 
 func _ready() -> void:
 	home = global_position
@@ -59,6 +60,20 @@ func _drop() -> void:
 
 func return_home() -> void:
 	global_position = home
+
+func join_plate(_plate: Plate) -> void:
+	if _plate != plate:
+		leave_plate()
+		plate = _plate
+		_plate.add(self)
+
+func leave_plate() -> void: 
+	if plate:
+		plate.remove(self)
+		plate = null
+
+func item_name() -> String:
+	return name
 
 func ready_extra() -> void: pass
 func on_drag_started() -> void: pass

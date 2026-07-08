@@ -48,15 +48,17 @@ func on_dropped_on_zone(dropped: DropZone) -> void:
 	match dropped.type:
 		DropZone.Type.GRILL:
 			on_grill = true
+			leave_plate()
 			_print_state("on grill")
 		DropZone.Type.RUBBISH:
+			leave_plate()
 			on_grill = false
 			_print_state("rubbish")
-		DropZone.Type.ASSEMBLY:
+		DropZone.Type.PLATE:
+			join_plate(dropped)
 			on_grill = false
-			dropped.on_item_dropped("patty")
-			_print_state("assemblyready")
 		_:
+			leave_plate()
 			_print_state("12345")
 
 func on_dropped_outside() -> void:
@@ -69,6 +71,9 @@ func on_drag_started() -> void:
 func on_clicked() -> void:
 	if on_grill:
 		flip()
+
+func item_name() -> String:
+	return "patty"
 
 func _print_state(tag: String) -> void:
 	var down := "top" if is_flipped else "bottom"
