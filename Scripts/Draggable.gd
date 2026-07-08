@@ -63,5 +63,5 @@ func return_home() -> void:
 func ready_extra() -> void: pass
 func on_drag_started() -> void: pass
 func on_clicked() -> void: pass
-func on_dropped_on_zone(dropped: DropZone) -> void: pass
+func on_dropped_on_zone(_dropped: DropZone) -> void: pass
 func on_dropped_outside() -> void: pass

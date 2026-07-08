@@ -52,8 +52,12 @@ func on_dropped_on_zone(dropped: DropZone) -> void:
 		DropZone.Type.RUBBISH:
 			on_grill = false
 			_print_state("rubbish")
+		DropZone.Type.ASSEMBLY:
+			on_grill = false
+			dropped.on_item_dropped("patty")
+			_print_state("assemblyready")
 		_:
-			return_home()
+			_print_state("12345")
 
 func on_dropped_outside() -> void:
 	on_grill = false
