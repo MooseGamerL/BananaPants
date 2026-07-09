@@ -55,6 +55,7 @@ func on_dropped_on_zone(dropped: DropZone) -> void:
 			on_grill = false
 			_print_state("rubbish")
 		DropZone.Type.PLATE:
+			print("patty drop on plate")
 			join_plate(dropped)
 			on_grill = false
 		_:

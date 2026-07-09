@@ -10,15 +10,15 @@ size = Vector2(198, 167)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8gbba"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_21xkr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6bp64"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bo1nx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jjvhh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kry3j"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_21xkr"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_6bp64"]
 
 [node name="Main" type="Node2D"]
 
@@ -58,35 +58,6 @@ offset_top = 12.0
 offset_right = 168.0
 offset_bottom = 645.0
 
-[node name="Patty Bin" type="ColorRect" parent="Bins"]
-layout_mode = 0
-offset_left = 19.0
-offset_top = 20.0
-offset_right = 132.0
-offset_bottom = 132.0
-color = Color(1, 0.132984, 0.218307, 1)
-
-[node name="Patty" type="Area2D" parent="Bins/Patty Bin"]
-position = Vector2(55, 60)
-script = ExtResource("1_jjgbg")
-
-[node name="Shape" type="CollisionShape2D" parent="Bins/Patty Bin/Patty"]
-z_index = 100
-scale = Vector2(2, 2)
-shape = SubResource("RectangleShape2D_bo1nx")
-
-[node name="CookTimer" type="Timer" parent="Bins/Patty Bin/Patty"]
-wait_time = 3.0
-autostart = true
-
-[node name="Visual" type="ColorRect" parent="Bins/Patty Bin/Patty"]
-z_index = 100
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-color = Color(0.763202, 0, 0.133048, 1)
-
 [node name="Bun Bin" type="ColorRect" parent="Bins"]
 layout_mode = 0
 offset_left = 17.0
@@ -95,22 +66,6 @@ offset_right = 130.0
 offset_bottom = 268.0
 color = Color(0.762355, 0.471963, 0.286197, 1)
 
-[node name="Bun" type="Area2D" parent="Bins/Bun Bin"]
-position = Vector2(55, 55)
-scale = Vector2(2, 2)
-script = ExtResource("4_jjvhh")
-ingredient_name = "Bun"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Bins/Bun Bin/Bun"]
-shape = SubResource("RectangleShape2D_jjvhh")
-
-[node name="ColorRect" type="ColorRect" parent="Bins/Bun Bin/Bun"]
-offset_left = -10.0
-offset_top = -10.0
-offset_right = 10.0
-offset_bottom = 10.0
-color = Color(0.882353, 0.576471, 0.286275, 1)
-
 [node name="Cheese Bin" type="ColorRect" parent="Bins"]
 layout_mode = 0
 offset_left = 19.0
@@ -118,22 +73,6 @@ offset_top = 277.0
 offset_right = 128.0
 offset_bottom = 385.0
 color = Color(1, 0.82143, 0.319012, 1)
-
-[node name="Cheese" type="Area2D" parent="Bins/Cheese Bin"]
-position = Vector2(52.415, 53.35)
-script = ExtResource("4_jjvhh")
-ingredient_name = "Cheese"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Bins/Cheese Bin/Cheese"]
-scale = Vector2(2, 2)
-shape = SubResource("RectangleShape2D_kry3j")
-
-[node name="ColorRect" type="ColorRect" parent="Bins/Cheese Bin/Cheese"]
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-color = Color(1, 1, 0, 1)
 
 [node name="Pickle Bin" type="ColorRect" parent="Bins"]
 layout_mode = 0
@@ -184,6 +123,14 @@ offset_right = 20.0
 offset_bottom = 20.0
 color = Color(1, 0, 0.113725, 1)
 
+[node name="Patty Bin" type="ColorRect" parent="Bins"]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 20.0
+offset_right = 132.0
+offset_bottom = 132.0
+color = Color(1, 0.132984, 0.218307, 1)
+
 [node name="Counter" type="ColorRect" parent="."]
 offset_left = 351.0
 offset_top = 528.0
@@ -207,3 +154,60 @@ offset_top = 13.0
 offset_right = 806.0
 offset_bottom = 184.0
 color = Color(0.381703, 0.381703, 0.381703, 1)
+
+[node name="Serve Button" type="Button" parent="."]
+offset_left = 780.0
+offset_top = 573.0
+offset_right = 820.0
+offset_bottom = 613.0
+
+[node name="Patty" type="Area2D" parent="."]
+position = Vector2(85, 92)
+script = ExtResource("1_jjgbg")
+
+[node name="Shape" type="CollisionShape2D" parent="Patty"]
+scale = Vector2(2, 2)
+shape = SubResource("RectangleShape2D_bo1nx")
+
+[node name="CookTimer" type="Timer" parent="Patty"]
+wait_time = 3.0
+autostart = true
+
+[node name="Visual" type="ColorRect" parent="Patty"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.763202, 0, 0.133048, 1)
+
+[node name="Bun" type="Area2D" parent="."]
+position = Vector2(83, 214)
+scale = Vector2(2, 2)
+script = ExtResource("4_jjvhh")
+ingredient_name = "Bun"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bun"]
+shape = SubResource("RectangleShape2D_jjvhh")
+
+[node name="ColorRect" type="ColorRect" parent="Bun"]
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+color = Color(0.882353, 0.576471, 0.286275, 1)
+
+[node name="Cheese" type="Area2D" parent="."]
+position = Vector2(82.415, 342.35)
+script = ExtResource("4_jjvhh")
+ingredient_name = "Cheese"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cheese"]
+scale = Vector2(2, 2)
+shape = SubResource("RectangleShape2D_kry3j")
+
+[node name="ColorRect" type="ColorRect" parent="Cheese"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(1, 1, 0, 1)

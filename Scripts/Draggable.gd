@@ -36,6 +36,7 @@ func _input(event: InputEvent) -> void:
 		elif not event.pressed and pressed:
 			if dragging:
 				dragging = false
+				print("Set z-index 0")
 				z_index = 0
 				_drop()
 			else:
@@ -62,15 +63,20 @@ func return_home() -> void:
 	global_position = home
 
 func join_plate(_plate: Plate) -> void:
-	if _plate != plate:
+	print("join_plate")
+	if plate != _plate:
 		leave_plate()
 		plate = _plate
-		_plate.add(self)
+	_plate.add(self)
 
 func leave_plate() -> void: 
 	if plate:
 		plate.remove(self)
 		plate = null
+
+func on_dropped_on_zone(_dropped: DropZone) -> void: 
+	if _dropped is Plate:
+		join_plate(_dropped)
 
 func item_name() -> String:
 	return name
@@ -78,5 +84,4 @@ func item_name() -> String:
 func ready_extra() -> void: pass
 func on_drag_started() -> void: pass
 func on_clicked() -> void: pass
-func on_dropped_on_zone(_dropped: DropZone) -> void: pass
 func on_dropped_outside() -> void: pass

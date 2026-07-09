@@ -11,5 +11,6 @@ config_version=5
 [application]
 
 config/name="I'm Cooked"
+run/main_scene="uid://cd78picbchuph"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
