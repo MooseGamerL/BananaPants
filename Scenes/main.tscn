@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://cd78picbchuph"]
+[gd_scene load_steps=13 format=3 uid="uid://cd78picbchuph"]
 
 [ext_resource type="Script" uid="uid://dji1pwntmgy8" path="res://Scripts/DropZone.gd" id="1_bo1nx"]
 [ext_resource type="Script" uid="uid://b24dp7eegrrkh" path="res://Scripts/Patty.gd" id="1_jjgbg"]
+[ext_resource type="Script" uid="uid://belo210gfbhwn" path="res://Scenes/Main.gd" id="1_kry3j"]
 [ext_resource type="Script" uid="uid://bu1pdq377gy5n" path="res://Scripts/Plate.gd" id="2_8gbba"]
 [ext_resource type="Script" uid="uid://dwnfy5sy227wb" path="res://Scripts/Ingredient.gd" id="4_jjvhh"]
 
@@ -21,6 +22,7 @@ size = Vector2(198, 167)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kry3j"]
 
 [node name="Main" type="Node2D"]
+script = ExtResource("1_kry3j")
 
 [node name="Grill" type="ColorRect" parent="."]
 offset_left = 412.0
@@ -138,14 +140,13 @@ offset_right = 829.0
 offset_bottom = 646.0
 scale = Vector2(1.0657, 1.09005)
 
-[node name="Information" type="Label" parent="."]
+[node name="Money Label" type="Label" parent="."]
 offset_left = 844.0
 offset_top = 36.0
 offset_right = 1070.0
 offset_bottom = 189.0
 theme_override_font_sizes/font_size = 35
 text = "Money: 0.00$
-Orders: None
 "
 
 [node name="Rubbish" type="ColorRect" parent="."]
@@ -155,7 +156,7 @@ offset_right = 806.0
 offset_bottom = 184.0
 color = Color(0.381703, 0.381703, 0.381703, 1)
 
-[node name="Serve Button" type="Button" parent="."]
+[node name="ServeButton" type="Button" parent="."]
 offset_left = 780.0
 offset_top = 573.0
 offset_right = 820.0
@@ -211,3 +212,18 @@ offset_top = -20.0
 offset_right = 20.0
 offset_bottom = 20.0
 color = Color(1, 1, 0, 1)
+
+[node name="Order Label" type="Label" parent="."]
+offset_left = 841.0
+offset_top = 90.0
+offset_right = 1241.0
+offset_bottom = 190.0
+theme_override_font_sizes/font_size = 35
+text = "Orders: None"
+
+[node name="ResultLabel" type="Label" parent="."]
+offset_left = 846.0
+offset_top = 218.0
+offset_right = 1094.0
+offset_bottom = 402.0
+theme_override_font_sizes/font_size = 35
