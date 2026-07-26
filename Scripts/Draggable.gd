@@ -1,6 +1,8 @@
 class_name Draggable
 extends Area2D
 
+signal wasted(cost: int) 
+
 const DRAG_Z := 100
 const DRAG_THRESHOLD := 6.0
 
@@ -14,6 +16,7 @@ var plate: Plate = null
 
 func _ready() -> void:
 	home = global_position
+	add_to_group("draggables")
 	area_entered.connect(_on_area_entered)
 	area_exited.connect(_on_area_exited)
 	ready_extra()
@@ -74,9 +77,24 @@ func leave_plate() -> void:
 		plate.remove(self)
 		plate = null
 
+func bin() -> void:
+	leave_plate()
+	return_home()
+	wasted.emit(waste_cost())
+
 func on_dropped_on_zone(_dropped: DropZone) -> void: 
-	if _dropped is Plate:
-		join_plate(_dropped)
+	match _dropped.type:
+		DropZone.Type.PLATE:
+			join_plate(_dropped as Plate)
+		DropZone.Type.RUBBISH:
+			print("binning")
+			bin()
+		_:
+			leave_plate()
+			return_home()
+
+func waste_cost() -> int:
+	return 1
 
 func item_name() -> String:
 	return name

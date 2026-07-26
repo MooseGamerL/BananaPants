@@ -52,7 +52,8 @@ func on_dropped_on_zone(dropped: DropZone) -> void:
 			_print_state("on grill")
 		DropZone.Type.RUBBISH:
 			leave_plate()
-			on_grill = false
+			reset_to_bin()
+			wasted.emit(waste_cost())
 			_print_state("rubbish")
 		DropZone.Type.PLATE:
 			print("patty drop on plate")
@@ -76,7 +77,18 @@ func on_clicked() -> void:
 func item_name() -> String:
 	return "patty"
 
+func waste_cost() -> int:
+	return 3
+
 func _print_state(tag: String) -> void:
 	var down := "top" if is_flipped else "bottom"
 	print ("[%s] top=%s bottom=%s (down=%s, on_grill=%s)" % [
 		tag, STATE_NAMES[top_state], STATE_NAMES[bottom_state], down, on_grill])
+
+func reset_to_bin() -> void:
+	return_home()
+	on_grill = false
+	top_state = CookState.RAW
+	bottom_state = CookState.RAW
+	is_flipped = false
+	update_visual()

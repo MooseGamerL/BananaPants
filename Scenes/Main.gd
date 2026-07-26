@@ -9,7 +9,7 @@ const TARGET_SECONDS := 30.0
 const MAX_SPEED_BONUS := 3
 
 @onready var plate: Plate = $Plate/Plate
-@onready var patty = $Patty
+@onready var patty = $"Bins/Patty Bin/Patty"
 @onready var money_label: Label = $"Money Label"
 @onready var serve_button: Button = $ServeButton
 @onready var result_label: Label = $ResultLabel
@@ -21,7 +21,15 @@ func _ready() -> void:
 	print("ready")
 	serve_button.pressed.connect(on_serve)
 	order_start_ms = Time.get_ticks_msec()
+	for item in get_tree().get_nodes_in_group("draggables"):
+		print("connecting")
+		item.wasted.connect(on_item_wasted)
 	update_money()
+
+func on_item_wasted(cost: int) -> void:
+	money = max(0, money - cost)
+	update_money()
+	print("binned: -$%d" % cost)
 
 func on_serve() -> void:
 	print("nsdiurhiusehir")
