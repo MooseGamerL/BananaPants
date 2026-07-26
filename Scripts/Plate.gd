@@ -21,6 +21,10 @@ func remove(_item: Draggable) -> void:
 		_item.z_index = 0
 		log_items()
 
+func new_round() -> void:
+	items.clear()
+	next_z = 1
+
 func stack_names() -> Array:
 	return items.map(func(i): return i.item_name())
 

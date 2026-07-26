@@ -10,11 +10,13 @@ const MAX_SPEED_BONUS := 3
 
 @onready var plate: Plate = $Plate/Plate
 @onready var patty = $"Bins/Patty Bin/Patty"
+@onready var serve_button: Button = $"Counter/Serve Button"
 @onready var money_label: Label = $"Money Label"
-@onready var serve_button: Button = $ServeButton
-@onready var result_label: Label = $ResultLabel
+@onready var result_label: Label = $"Result Label"
+@onready var order_label: Label = $"Order Label"
 
 var money := 0
+var customer := 1
 var order_start_ms := 0
 
 func _ready() -> void:
@@ -25,6 +27,11 @@ func _ready() -> void:
 		print("connecting")
 		item.wasted.connect(on_item_wasted)
 	update_money()
+	start_order()
+
+func start_order() -> void:
+	order_label.text = "CUSTOMER #%d\nCheeseburger:\nBun -> Patty -> \nCheese -> Sauce -> \nPickle" % customer
+	order_start_ms = Time.get_ticks_msec()
 
 func on_item_wasted(cost: int) -> void:
 	money = max(0, money - cost)
@@ -41,6 +48,10 @@ func on_serve() -> void:
 	var payout := score_order(patty.top_state, patty.bottom_state, stack, elapsed)
 	money += payout
 	update_money()
+	customer += 1
+	get_tree().call_group("draggables", "reset")
+	plate.new_round()
+	start_order()
 
 func update_money() -> void:
 	money_label.text = "$%d" % money

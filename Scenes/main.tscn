@@ -6,10 +6,12 @@
 [ext_resource type="Script" uid="uid://bu1pdq377gy5n" path="res://Scripts/Plate.gd" id="2_8gbba"]
 [ext_resource type="Script" uid="uid://dwnfy5sy227wb" path="res://Scripts/Ingredient.gd" id="4_jjvhh"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8gbba"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jjgbg"]
 size = Vector2(198, 167)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_8gbba"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_344ge"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jjvhh"]
 
@@ -21,33 +23,8 @@ size = Vector2(198, 167)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_21xkr"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_344ge"]
-
 [node name="Main" type="Node2D"]
 script = ExtResource("1_kry3j")
-
-[node name="Grill" type="ColorRect" parent="."]
-offset_left = 412.0
-offset_top = 12.0
-offset_right = 610.0
-offset_bottom = 179.0
-color = Color(1, 0, 0, 1)
-
-[node name="GrillZone" type="Area2D" parent="Grill"]
-position = Vector2(99, 83.5)
-script = ExtResource("1_bo1nx")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Grill/GrillZone"]
-shape = SubResource("RectangleShape2D_jjgbg")
-
-[node name="Label" type="Label" parent="Grill"]
-layout_mode = 0
-offset_left = 79.0
-offset_top = 170.0
-offset_right = 119.0
-offset_bottom = 219.0
-text = "Grill
-"
 
 [node name="Plate" type="ColorRect" parent="."]
 offset_left = 199.0
@@ -72,6 +49,54 @@ offset_top = 175.0
 offset_right = 114.0
 offset_bottom = 224.0
 text = "Plate
+"
+
+[node name="Grill" type="ColorRect" parent="."]
+offset_left = 412.0
+offset_top = 12.0
+offset_right = 610.0
+offset_bottom = 179.0
+color = Color(1, 0, 0, 1)
+
+[node name="GrillZone" type="Area2D" parent="Grill"]
+position = Vector2(99, 83.5)
+script = ExtResource("1_bo1nx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Grill/GrillZone"]
+shape = SubResource("RectangleShape2D_jjgbg")
+
+[node name="Label" type="Label" parent="Grill"]
+layout_mode = 0
+offset_left = 79.0
+offset_top = 170.0
+offset_right = 119.0
+offset_bottom = 219.0
+text = "Grill
+"
+
+[node name="Rubbish" type="ColorRect" parent="."]
+offset_left = 623.0
+offset_top = 13.0
+offset_right = 806.0
+offset_bottom = 184.0
+color = Color(0.381703, 0.381703, 0.381703, 1)
+
+[node name="Rubbish" type="Area2D" parent="Rubbish"]
+position = Vector2(91.61, 85.545)
+scale = Vector2(9.15, 8.55)
+script = ExtResource("1_bo1nx")
+type = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rubbish/Rubbish"]
+shape = SubResource("RectangleShape2D_344ge")
+
+[node name="Label" type="Label" parent="Rubbish"]
+layout_mode = 0
+offset_left = 55.0
+offset_top = 179.0
+offset_right = 118.0
+offset_bottom = 228.0
+text = "Rubbish
 "
 
 [node name="Bins" type="ColorRect" parent="."]
@@ -254,6 +279,20 @@ offset_right = 829.0
 offset_bottom = 646.0
 scale = Vector2(1.0657, 1.09005)
 
+[node name="Serve Button" type="Button" parent="Counter"]
+offset_left = 402.552
+offset_top = 41.2825
+offset_right = 442.552
+offset_bottom = 81.2825
+
+[node name="Order Label" type="Label" parent="."]
+offset_left = 841.0
+offset_top = 90.0
+offset_right = 1109.0
+offset_bottom = 303.0
+theme_override_font_sizes/font_size = 35
+text = "Orders: None"
+
 [node name="Money Label" type="Label" parent="."]
 offset_left = 844.0
 offset_top = 36.0
@@ -263,48 +302,9 @@ theme_override_font_sizes/font_size = 35
 text = "Money: 0.00$
 "
 
-[node name="Rubbish" type="ColorRect" parent="."]
-offset_left = 623.0
-offset_top = 13.0
-offset_right = 806.0
-offset_bottom = 184.0
-color = Color(0.381703, 0.381703, 0.381703, 1)
-
-[node name="Rubbish" type="Area2D" parent="Rubbish"]
-position = Vector2(91.61, 85.545)
-scale = Vector2(9.15, 8.55)
-script = ExtResource("1_bo1nx")
-type = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Rubbish/Rubbish"]
-shape = SubResource("RectangleShape2D_344ge")
-
-[node name="Label" type="Label" parent="Rubbish"]
-layout_mode = 0
-offset_left = 55.0
-offset_top = 179.0
-offset_right = 118.0
-offset_bottom = 228.0
-text = "Rubbish
-"
-
-[node name="ServeButton" type="Button" parent="."]
-offset_left = 780.0
-offset_top = 573.0
-offset_right = 820.0
-offset_bottom = 613.0
-
-[node name="Order Label" type="Label" parent="."]
-offset_left = 841.0
-offset_top = 90.0
-offset_right = 1241.0
-offset_bottom = 190.0
-theme_override_font_sizes/font_size = 35
-text = "Orders: None"
-
-[node name="ResultLabel" type="Label" parent="."]
-offset_left = 846.0
-offset_top = 218.0
-offset_right = 1094.0
-offset_bottom = 402.0
+[node name="Result Label" type="Label" parent="."]
+offset_left = 394.0
+offset_top = 271.0
+offset_right = 642.0
+offset_bottom = 455.0
 theme_override_font_sizes/font_size = 35

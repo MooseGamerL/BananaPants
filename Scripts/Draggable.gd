@@ -65,6 +65,14 @@ func _drop() -> void:
 func return_home() -> void:
 	global_position = home
 
+func reset() -> void:
+	leave_plate()
+	pressed = false
+	dragging = false
+	z_index = 0
+	return_home()
+	reset_extra()
+
 func join_plate(_plate: Plate) -> void:
 	print("join_plate")
 	if plate != _plate:
@@ -100,6 +108,7 @@ func item_name() -> String:
 	return name
 
 func ready_extra() -> void: pass
+func reset_extra() -> void: pass
 func on_drag_started() -> void: pass
 func on_clicked() -> void: pass
 func on_dropped_outside() -> void: pass

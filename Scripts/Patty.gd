@@ -85,10 +85,16 @@ func _print_state(tag: String) -> void:
 	print ("[%s] top=%s bottom=%s (down=%s, on_grill=%s)" % [
 		tag, STATE_NAMES[top_state], STATE_NAMES[bottom_state], down, on_grill])
 
-func reset_to_bin() -> void:
-	return_home()
+func reset_cookstate() -> void:
 	on_grill = false
 	top_state = CookState.RAW
 	bottom_state = CookState.RAW
 	is_flipped = false
 	update_visual()
+
+func reset_to_bin() -> void:
+	reset_cookstate()
+	return_home()
+
+func reset_extra() -> void:
+	reset_cookstate()
