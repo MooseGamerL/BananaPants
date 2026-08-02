@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://cd78picbchuph"]
+[gd_scene load_steps=15 format=3 uid="uid://cd78picbchuph"]
 
 [ext_resource type="Script" uid="uid://dji1pwntmgy8" path="res://Scripts/DropZone.gd" id="1_bo1nx"]
 [ext_resource type="Script" uid="uid://b24dp7eegrrkh" path="res://Scripts/Patty.gd" id="1_jjgbg"]
 [ext_resource type="Script" uid="uid://belo210gfbhwn" path="res://Scenes/Main.gd" id="1_kry3j"]
 [ext_resource type="Script" uid="uid://bu1pdq377gy5n" path="res://Scripts/Plate.gd" id="2_8gbba"]
 [ext_resource type="Script" uid="uid://dwnfy5sy227wb" path="res://Scripts/Ingredient.gd" id="4_jjvhh"]
+[ext_resource type="AudioStream" uid="uid://o8lxx6be8pkg" path="res://Assets/11325622-reverse-cymbal-sound-effect-239951.mp3" id="6_21xkr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8gbba"]
 
@@ -165,6 +166,9 @@ offset_top = -20.0
 offset_right = 20.0
 offset_bottom = 20.0
 color = Color(0.763202, 0, 0.133048, 1)
+
+[node name="Sizzle" type="AudioStreamPlayer" parent="Bins/Patty Bin/Patty"]
+stream = ExtResource("6_21xkr")
 
 [node name="Label" type="Label" parent="Bins/Patty Bin"]
 layout_mode = 0

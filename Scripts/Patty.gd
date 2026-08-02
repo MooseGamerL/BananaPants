@@ -18,6 +18,7 @@ var on_grill := false
 
 @onready var cook_timer: Timer = $CookTimer
 @onready var visual: ColorRect = $Visual
+@onready var state_sizzle: AudioStreamPlayer = $Sizzle #A sound to indicate patty state change
 
 func ready_extra() -> void:
 	cook_timer.timeout.connect(_on_cook_tick)
@@ -37,12 +38,17 @@ func _on_cook_tick() -> void:
 		bottom_state = min(bottom_state + 1, CookState.CONGRATULATION)
 	_print_state("cooking larry")
 	update_visual()
+	state_sizzle.pitch_scale = 0.75 + _down_state() * 0.18
+	state_sizzle.play()
 
 func _down_state() -> int:
 	return top_state if is_flipped else bottom_state
 
+func _up_state() -> int:
+	return bottom_state if is_flipped else top_state
+
 func update_visual() -> void:
-	visual.color = STATE_COLOURS[_down_state()]
+	visual.color = STATE_COLOURS[_up_state()]
 
 func on_dropped_on_zone(dropped: DropZone) -> void: 
 	match dropped.type:
