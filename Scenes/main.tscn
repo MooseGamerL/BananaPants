@@ -280,10 +280,20 @@ offset_bottom = 646.0
 scale = Vector2(1.0657, 1.09005)
 
 [node name="Serve Button" type="Button" parent="Counter"]
+layout_mode = 0
 offset_left = 402.552
 offset_top = 41.2825
 offset_right = 442.552
 offset_bottom = 81.2825
+
+[node name="Label" type="Label" parent="Counter/Serve Button"]
+layout_mode = 0
+offset_left = -2.021
+offset_top = -19.003
+offset_right = 40.979
+offset_bottom = 3.997
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Serve"
 
 [node name="Order Label" type="Label" parent="."]
 offset_left = 841.0

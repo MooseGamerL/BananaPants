@@ -49,7 +49,7 @@ func _input(event: InputEvent) -> void:
 func _physics_process(_delta: float) -> void:
 	if pressed and not dragging:
 		if get_global_mouse_position().distance_to(press_mouse) > DRAG_THRESHOLD:
-			dragging = true
+			dragging = true	
 			z_index = DRAG_Z
 			offset = global_position - get_global_mouse_position()
 			on_drag_started()
@@ -60,6 +60,7 @@ func _drop() -> void:
 	if zone:
 		on_dropped_on_zone(zone)
 	else:
+		leave_plate()
 		on_dropped_outside()
 
 func return_home() -> void:
@@ -81,6 +82,7 @@ func join_plate(_plate: Plate) -> void:
 	_plate.add(self)
 
 func leave_plate() -> void: 
+	print("left plate")
 	if plate:
 		plate.remove(self)
 		plate = null
