@@ -1,3 +1,4 @@
+class_name Ingredient
 extends Draggable
 
 @export var ingredient_name: String = "item"

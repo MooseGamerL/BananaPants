@@ -1,6 +1,6 @@
 extends Node2D
 
-const RECIPE := ["bun", "patty", "cheese", "sauce", "pickle"]
+const RECIPE := ["bottom_bun", "patty", "cheese", "sauce", "pickle", "top_bun"]
 
 const WELL := 3
 const CONGRATULATION := 4
@@ -11,6 +11,7 @@ const MAX_SPEED_BONUS := 3
 @onready var plate: Plate = $Plate/Plate
 @onready var patty = $"Bins/Patty Bin/Patty"
 @onready var serve_button: Button = $"Counter/Serve Button"
+@onready var ding: AudioStreamPlayer = $"Counter/Serve Button/AudioStreamPlayer"
 @onready var money_label: Label = $"Money Label"
 @onready var result_label: Label = $"Result Label"
 @onready var order_label: Label = $"Order Label"
@@ -29,8 +30,9 @@ func _ready() -> void:
 	update_money()
 	start_order()
 
+
 func start_order() -> void:
-	order_label.text = "CUSTOMER #%d\nCheeseburger:\nBun -> Patty -> \nCheese -> Sauce -> \nPickle" % customer
+	order_label.text = "CUSTOMER #%d\nCheeseburger:\nBottom Bun \nPatty \nCheese \nSauce \nPickle \nTop Bun"% customer
 	order_start_ms = Time.get_ticks_msec()
 
 func on_item_wasted(cost: int) -> void:
@@ -39,7 +41,9 @@ func on_item_wasted(cost: int) -> void:
 	print("binned: -$%d" % cost)
 
 func on_serve() -> void:
-	print("nsdiurhiusehir")
+	print("Serving")
+	if serve_button.pressed:
+		ding.play()
 	var stack := plate.stack_names()
 	if stack.is_empty():
 		print("no such thing a s a p l a te to s e r v e")
