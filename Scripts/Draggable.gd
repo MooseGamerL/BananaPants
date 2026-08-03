@@ -2,10 +2,12 @@ class_name Draggable
 extends Area2D
 
 signal wasted(cost: int) 
+signal spawned(item: Draggable)
 
 const DRAG_Z := 100
 const DRAG_THRESHOLD := 6.0
 
+var is_stock := true
 var home: Vector2
 var pressed := false
 var dragging := false
@@ -52,6 +54,8 @@ func _physics_process(_delta: float) -> void:
 			dragging = true	
 			z_index = DRAG_Z
 			offset = global_position - get_global_mouse_position()
+			if is_stock:
+				restock()
 			on_drag_started()
 	if dragging:
 		global_position = get_global_mouse_position() + offset
@@ -68,11 +72,35 @@ func return_home() -> void:
 
 func reset() -> void:
 	leave_plate()
+	if not is_stock:
+		queue_free()
+		return
 	pressed = false
 	dragging = false
 	z_index = 0
 	return_home()
 	reset_extra()
+
+func restock() -> void:
+	is_stock = false
+	var copy := spawn_copy(home)
+	copy.become_stock(home)
+
+func spawn_copy(where: Vector2) -> Draggable:
+	var copy: Draggable = duplicate()
+	get_parent().add_child(copy)
+	copy.global_position = where
+	copy.home = where
+	copy.z_index = 0
+	copy.is_stock = false
+	spawned.emit(copy)
+	return copy
+
+func become_stock(_home: Vector2) -> void:
+	is_stock = true
+	home = _home
+	global_position = home
+
 
 func join_plate(_plate: Plate) -> void:
 	print("join_plate")
@@ -89,8 +117,11 @@ func leave_plate() -> void:
 
 func bin() -> void:
 	leave_plate()
-	return_home()
 	wasted.emit(waste_cost())
+	if is_stock:
+		return_home()
+	else:
+		queue_free()
 
 func on_dropped_on_zone(_dropped: DropZone) -> void: 
 	match _dropped.type:

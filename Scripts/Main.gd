@@ -9,7 +9,6 @@ const TARGET_SECONDS := 30.0
 const MAX_SPEED_BONUS := 3
 
 @onready var plate: Plate = $Plate/Plate
-@onready var patty = $"Bins/Patty Bin/Patty"
 @onready var serve_button: Button = $"Counter/Serve Button"
 @onready var ding: AudioStreamPlayer = $"Counter/Serve Button/AudioStreamPlayer"
 @onready var money_label: Label = $"Money Label"
@@ -21,15 +20,16 @@ var customer := 1
 var order_start_ms := 0
 
 func _ready() -> void:
-	print("ready")
 	serve_button.pressed.connect(on_serve)
 	order_start_ms = Time.get_ticks_msec()
 	for item in get_tree().get_nodes_in_group("draggables"):
-		print("connecting")
-		item.wasted.connect(on_item_wasted)
+		register(item)
 	update_money()
 	start_order()
 
+func register(item: Draggable) -> void:
+	item.wasted.connect(on_item_wasted)
+	item.spawned.connect(register)
 
 func start_order() -> void:
 	order_label.text = "CUSTOMER #%d\nCheeseburger:\nBottom Bun \nPatty \nCheese \nSauce \nPickle \nTop Bun"% customer
@@ -49,7 +49,11 @@ func on_serve() -> void:
 		print("no such thing a s a p l a te to s e r v e")
 		return
 	var elapsed := (Time.get_ticks_msec() - order_start_ms) / 1000.0
-	var payout := score_order(patty.top_state, patty.bottom_state, stack, elapsed)
+	var patties := []
+	for item in plate.items:
+		if item.item_name() == "patty":
+			patties.append(item)
+	var payout := score_order(patties, stack, elapsed)
 	money += payout
 	update_money()
 	customer += 1
@@ -60,9 +64,13 @@ func on_serve() -> void:
 func update_money() -> void:
 	money_label.text = "$%d" % money
 
-func score_order(top_state: int, bottom_state: int, stack: Array, elapsed: float) -> int:
-	var cook := (side_score(top_state) + side_score(bottom_state)) / 2.0
-	
+func score_order(patties: Array, stack: Array, elapsed: float) -> int:
+	var cook := 0.0
+	for p in patties:
+		cook +=(side_score(p.top_state) + side_score(p.bottom_state)) / 2.0
+		if not patties.is_empty():
+			cook /= patties.size()
+
 	var n : int = min(stack.size(), RECIPE.size())
 	var correct := 0
 	for i in n:

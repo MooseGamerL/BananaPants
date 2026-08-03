@@ -56,18 +56,14 @@ func on_dropped_on_zone(dropped: DropZone) -> void:
 			on_grill = true
 			leave_plate()
 			_print_state("on grill")
-		DropZone.Type.RUBBISH:
-			leave_plate()
-			reset_to_bin()
-			wasted.emit(waste_cost())
-			_print_state("rubbish")
 		DropZone.Type.PLATE:
 			print("patty drop on plate")
 			join_plate(dropped)
 			on_grill = false
 		_:
-			leave_plate()
-			_print_state("12345")
+			on_grill = false
+			_print_state("Off grill")
+			super.on_dropped_on_zone(dropped)
 
 func on_dropped_outside() -> void:
 	on_grill = false
