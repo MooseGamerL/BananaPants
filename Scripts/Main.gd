@@ -2,6 +2,13 @@ extends Node2D
 
 const RECIPE := ["bottom_bun", "patty", "cheese", "sauce", "pickle", "top_bun"]
 
+const ESSENTIALS := ["bottom_bun", "patty", "top_bun"]
+const ESSENTIAL_LABELS := {
+	"bottom_bun": "a bottom bun",
+	"patty": "a patty",
+	"top_bun": "a top bun",
+}
+
 const WELL := 3
 const CONGRATULATION := 4
 const BASE_PRICE := 10
@@ -45,8 +52,9 @@ func on_serve() -> void:
 	if serve_button.pressed:
 		ding.play()
 	var stack := plate.stack_names()
-	if stack.is_empty():
-		print("no such thing a s a p l a te to s e r v e")
+	var missing := missing_essentials(stack)
+	if not missing.is_empty():
+		reject_serve(stack, missing)
 		return
 	var elapsed := (Time.get_ticks_msec() - order_start_ms) / 1000.0
 	var patties := []
@@ -62,6 +70,29 @@ func on_serve() -> void:
 
 func update_money() -> void:
 	money_label.text = "$%d" % money
+
+func missing_essentials(stack: Array) -> Array:
+	var missing := []
+	for need in ESSENTIALS:
+		if not stack.has(need):
+			missing.append(need)
+	return missing
+
+func reject_serve(stack: Array, missing: Array) -> void:
+	var wants := []
+	for m in missing:
+
+		wants.append(ESSENTIAL_LABELS[m])
+	var hint := ""
+	if stack.has("bun"):
+		hint = "\n (click the bun to chop it)"
+	result_label.text = "this burger is incomplete, it needs %s!%s" % [readable_list(wants), hint]
+	print("REJECTED: missing %s (plate: %s)" % [str(missing), str(stack)])
+
+func readable_list(bits: Array) -> String:
+	if bits.size() <= 1:
+		return "". join(bits)
+	return ", ".join(bits.slice(0, bits.size() - 1)) + " and " + bits[-1]
 
 func score_order(patties: Array, stack: Array, elapsed: float) -> int:
 	var cook := 0.0
