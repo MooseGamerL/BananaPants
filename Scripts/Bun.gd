@@ -20,3 +20,8 @@ func split() -> void:
 func become_top_bun() -> void:
 	ingredient_name = "top_bun"
 	visual.color = TOP_COLOUR
+
+func waste_cost() -> int:
+	if ingredient_name == "bun":
+		return 2
+	return 1
