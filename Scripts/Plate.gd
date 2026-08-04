@@ -22,7 +22,10 @@ func remove(_item: Draggable) -> void:
 		_item.z_index = 0
 		log_items()
 
-func new_round() -> void:
+func serve_and_clear() -> void:
+	for item in items:
+		if is_instance_valid(item):
+			item.queue_free()
 	items.clear()
 	next_z = 1
 

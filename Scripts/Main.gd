@@ -57,8 +57,7 @@ func on_serve() -> void:
 	money += payout
 	update_money()
 	customer += 1
-	get_tree().call_group("draggables", "reset")
-	plate.new_round()
+	plate.serve_and_clear()
 	start_order()
 
 func update_money() -> void:

@@ -70,17 +70,6 @@ func _drop() -> void:
 func return_home() -> void:
 	global_position = home
 
-func reset() -> void:
-	leave_plate()
-	if not is_stock:
-		queue_free()
-		return
-	pressed = false
-	dragging = false
-	z_index = 0
-	return_home()
-	reset_extra()
-
 func restock() -> void:
 	is_stock = false
 	var copy := spawn_copy(home)
@@ -118,10 +107,7 @@ func leave_plate() -> void:
 func bin() -> void:
 	leave_plate()
 	wasted.emit(waste_cost())
-	if is_stock:
-		return_home()
-	else:
-		queue_free()
+	queue_free()
 
 func on_dropped_on_zone(_dropped: DropZone) -> void: 
 	match _dropped.type:
@@ -141,7 +127,6 @@ func item_name() -> String:
 	return name
 
 func ready_extra() -> void: pass
-func reset_extra() -> void: pass
 func on_drag_started() -> void: pass
 func on_clicked() -> void: pass
 func on_dropped_outside() -> void: pass
