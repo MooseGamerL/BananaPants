@@ -1,6 +1,21 @@
 extends Node2D
 
-const RECIPE := ["bottom_bun", "patty", "cheese", "sauce", "pickle", "top_bun"]
+const BASE_ORDER := {
+	"bottom_bun": 1, "patty": 2, "cheese": 3, "sauce": 4, "pickle": 5, "top_bun": 6
+}
+
+const MODIFIERS := [
+	{"name": "no pickles",    "item": "pickle", "count": 0},
+	{"name": "extra pickles", "item": "pickle", "count": 2},
+	{"name": "no sauce",      "item": "sauce",  "count": 0},
+	{"name": "no cheese",     "item": "cheese", "count": 0},
+	{"name": "double cheese", "item": "cheese", "count": 2},
+	{"name": "double patty",  "item": "patty",  "count": 2}
+]
+
+const TICKET_ORDER := ["patty", "cheese", "sauce", "pickle"]
+
+const BUN_PLACEMENT_PENALTY := 0.15
 
 const ESSENTIALS := ["bottom_bun", "patty", "top_bun"]
 const ESSENTIAL_LABELS := {
@@ -25,6 +40,7 @@ const MAX_SPEED_BONUS := 3
 var money := 0
 var customer := 1
 var order_start_ms := 0
+var order := BASE_ORDER.duplicate()
 
 func _ready() -> void:
 	serve_button.pressed.connect(on_serve)
@@ -39,8 +55,37 @@ func register(item: Draggable) -> void:
 	item.spawned.connect(register)
 
 func start_order() -> void:
-	order_label.text = "CUSTOMER #%d\nCheeseburger:\nBottom Bun \nPatty \nCheese \nSauce \nPickle \nTop Bun"% customer
+	order = roll_order()
+	order_label.text = ticket_text()
 	order_start_ms = Time.get_ticks_msec()
+	print("ORDER #%d: %s" % [customer, str(order)])
+	
+func roll_order() -> Dictionary:
+	var _order := BASE_ORDER.duplicate()
+	var pool := MODIFIERS.duplicate()
+	pool.shuffle()
+	var spoken_for := {}
+	var wanted := 1 + (randi() % 2)
+	for mod in pool:
+		if spoken_for.size() >= wanted:
+			break
+		if spoken_for.has(mod.item):
+			continue
+		spoken_for[mod.item] = true
+		order[mod.item] = mod.count
+	return order
+
+func ticket_text() -> String:
+	var lines := ["CUSTOMER #%d" % customer, "bun (click to chop)"]
+	for item in TICKET_ORDER:
+		var count: int = order.get(item, 0)
+		if count == 0:
+			lines.append("NO %s" % item)
+		elif count == BASE_ORDER[item]:
+			lines.append(item)
+		else:
+			lines.append("%s x%d" % [item, count])
+	return "\n".join(lines)
 
 func on_item_wasted(cost: int) -> void:
 	money = max(0, money - cost)
@@ -101,12 +146,7 @@ func score_order(patties: Array, stack: Array, elapsed: float) -> int:
 		if not patties.is_empty():
 			cook /= patties.size()
 
-	var n : int = min(stack.size(), RECIPE.size())
-	var correct := 0
-	for i in n:
-		if stack[i] == RECIPE[i]:
-			correct += 1
-	var assembly := correct / float(RECIPE.size())
+	var assembly := assembly_score(stack)
 	
 	var speed := 1.0
 	if elapsed > TARGET_SECONDS:
@@ -115,10 +155,40 @@ func score_order(patties: Array, stack: Array, elapsed: float) -> int:
 	
 	var payout : int = int(round(BASE_PRICE * cook * assembly)) + speed_bonus
 	
-	print("--- SERVE --- cook=%.2f assembly=%.2f (%d/%d) time=%.1fs speed=%d => $%d" % [
-		cook, assembly, correct, RECIPE.size(), elapsed, speed_bonus, payout])
-	show_result(cook, assembly, correct, elapsed, speed_bonus, payout)
+	print("--- SERVE --- cook=%.2f assembly=%.2f time=%.1fs speed=%d => $%d (wanted %s, got %s)" % [
+		cook, assembly, elapsed, speed_bonus, payout, str(order), str(counts(stack))])
+	show_result(cook, assembly, elapsed, speed_bonus, payout)
 	return payout
+
+func assembly_score(stack: Array) -> float:
+	var got := counts(stack)
+	var wanted_total := 0
+	for item in order:
+		wanted_total += order[item]
+	
+	var every_item := {}
+	for item in order:
+		every_item[item] = true
+	for item in got:
+		every_item[item] = true
+	
+	var wrong = 0
+	for item in every_item:
+		wrong += abs(int(order.get(item, 0)) - int (got.get(item, 0)))
+	var correctness: float = max (0.0, 1.0 - float(wrong) / float(wanted_total))
+	
+	var placement := 1.0
+	if stack.is_empty() or stack[0] != "bottom_bun":
+		placement -= BUN_PLACEMENT_PENALTY
+	if stack.is_empty() or stack[-1] != "top_bun":
+		placement -= BUN_PLACEMENT_PENALTY
+	return correctness * placement
+
+func counts(stack: Array) -> Dictionary:
+	var _counts := {}
+	for item_name in stack:
+		_counts[item_name] = _counts.get(item_name, 0) + 1
+	return _counts
 
 func side_score(state: int) -> float:
 	if state == CONGRATULATION:
@@ -126,6 +196,6 @@ func side_score(state: int) -> float:
 	var diff : int = abs(state - WELL)
 	return max(0.0, 1.0 - diff * 0.3) # WELL=1.0  MED=0.7  RARE=0.4 RAW=0.1
 
-func show_result(cook: float, _assembly: float, correct: int, elapsed: float, bonus: int, payout: int) -> void:
-	result_label.text = "Payout: $%d\ncook %d%%  assembly %d/%d\ntime %.1fs speed +$%d" % [
-		payout, int(round(cook * 100)), correct,RECIPE.size(), elapsed, bonus]
+func show_result(cook: float, _assembly: float, elapsed: float, bonus: int, payout: int) -> void:
+	result_label.text = "Payout: $%d\ncook %d%% \norder %d%%\ntime %.1fs speed +$%d" % [
+		payout, int(round(cook * 100)), int(round(_assembly * 100)), elapsed, bonus]
