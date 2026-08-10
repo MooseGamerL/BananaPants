@@ -22,6 +22,7 @@ var on_grill := false
 
 func ready_extra() -> void:
 	cook_timer.timeout.connect(_on_cook_tick)
+	cook_timer.start()
 	update_visual()
 
 func flip() -> void:

@@ -86,7 +86,7 @@ func reject_serve(stack: Array, missing: Array) -> void:
 	var hint := ""
 	if stack.has("bun"):
 		hint = "\n (click the bun to chop it)"
-	result_label.text = "this burger is incomplete, it needs %s!%s" % [readable_list(wants), hint]
+	result_label.text = "this burger is incomplete, \nit needs %s!%s" % [readable_list(wants), hint]
 	print("REJECTED: missing %s (plate: %s)" % [str(missing), str(stack)])
 
 func readable_list(bits: Array) -> String:

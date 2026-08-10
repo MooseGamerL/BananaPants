@@ -322,8 +322,8 @@ text = "Money: 0.00$
 "
 
 [node name="Result Label" type="Label" parent="."]
-offset_left = 394.0
-offset_top = 271.0
-offset_right = 642.0
-offset_bottom = 455.0
-theme_override_font_sizes/font_size = 35
+offset_left = 205.0
+offset_top = 264.0
+offset_right = 453.0
+offset_bottom = 448.0
+theme_override_font_sizes/font_size = 28
