@@ -1,10 +1,7 @@
 class_name DropZone
 extends Area2D
 
+# What type of zone this is, controls how Draggables react when dropped here.
 enum Type { GRILL, PLATE, RUBBISH, COUNTER }
 
 @export var type: Type = Type.GRILL
-
-func snap_position() -> Vector2:
-	var marker := get_node_or_null("SnapPoint") as Node2D
-	return marker.global_position if marker else global_position

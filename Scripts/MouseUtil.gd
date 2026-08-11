@@ -1,6 +1,8 @@
 class_name MouseUtil
 extends RefCounted
 
+# Checks whether the mouse is currently directly over the given collision area, 
+# by doing a physics point-query at the mouse position and seeing if this area is one of the hits.
 static func mouse_over(area: CollisionObject2D) -> bool:
 	var params := PhysicsPointQueryParameters2D.new()
 	params.position = area.get_global_mouse_position()
