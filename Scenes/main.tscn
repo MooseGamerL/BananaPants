@@ -10,11 +10,13 @@
 [ext_resource type="AudioStream" uid="uid://cg5q7b13hnms8" path="res://Assets/linhmitto-bellding-254774.mp3" id="7_6bp64"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8gbba"]
+size = Vector2(20.0037, 19.9127)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jjgbg"]
 size = Vector2(198, 167)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_344ge"]
+size = Vector2(20.012, 19.4152)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jjvhh"]
 
@@ -33,7 +35,7 @@ script = ExtResource("1_kry3j")
 offset_left = 199.0
 offset_top = 14.0
 offset_right = 389.0
-offset_bottom = 180.0
+offset_bottom = 179.0
 color = Color(0.707967, 0.707967, 0.707967, 1)
 
 [node name="Plate" type="Area2D" parent="Plate"]
@@ -43,14 +45,15 @@ script = ExtResource("2_8gbba")
 type = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Plate/Plate"]
+position = Vector2(0.0018425, -0.0436745)
 shape = SubResource("RectangleShape2D_8gbba")
 
 [node name="Label" type="Label" parent="Plate"]
 layout_mode = 0
-offset_left = 74.0
-offset_top = 175.0
-offset_right = 114.0
-offset_bottom = 224.0
+offset_left = 73.0
+offset_top = 167.0
+offset_right = 113.0
+offset_bottom = 216.0
 text = "Plate
 "
 
@@ -79,9 +82,9 @@ text = "Grill
 
 [node name="Rubbish" type="ColorRect" parent="."]
 offset_left = 623.0
-offset_top = 13.0
+offset_top = 12.0
 offset_right = 806.0
-offset_bottom = 184.0
+offset_bottom = 179.0
 color = Color(0.381703, 0.381703, 0.381703, 1)
 
 [node name="Rubbish" type="Area2D" parent="Rubbish"]
@@ -91,14 +94,15 @@ script = ExtResource("1_bo1nx")
 type = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Rubbish/Rubbish"]
+position = Vector2(-0.00601196, -0.29766)
 shape = SubResource("RectangleShape2D_344ge")
 
 [node name="Label" type="Label" parent="Rubbish"]
 layout_mode = 0
 offset_left = 55.0
-offset_top = 179.0
+offset_top = 170.0
 offset_right = 118.0
-offset_bottom = 228.0
+offset_bottom = 219.0
 text = "Rubbish
 "
 

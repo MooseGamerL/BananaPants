@@ -2,7 +2,7 @@ extends Node2D
 
 # The default (unmodified) count of each item required on a burger.
 const BASE_ORDER := {
-	"bottom_bun": 1, "patty": 2, "cheese": 3, "sauce": 4, "pickle": 5, "top_bun": 6
+	"bottom_bun": 1, "patty": 1, "cheese": 1, "sauce": 1, "pickle": 1, "top_bun": 1
 }
 
 # Possible modifiers that can be applied to an order (e.g. "no pickles"),
@@ -184,7 +184,7 @@ func score_order(patties: Array, stack: Array, elapsed: float) -> int:
 	
 	var payout : int = int(round(BASE_PRICE * cook * assembly)) + speed_bonus
 	
-	print("--- SERVE --- cook=%.2f assembly=%.2f time=%.1fs speed=%d => $%d (wanted %s, got %s)" % [
+	print("<SERVE> cook=%.2f assembly=%.2f time=%.1fs speed=%d => $%d (wanted %s, got %s)" % [
 		cook, assembly, elapsed, speed_bonus, payout, str(order), str(counts(stack))])
 	show_result(cook, assembly, elapsed, speed_bonus, payout)
 	return payout
