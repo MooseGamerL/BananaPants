@@ -52,21 +52,23 @@ func _input(event: InputEvent) -> void:
 			else:
 				on_clicked()
 			pressed = false
+	elif event is InputEventMouseMotion and pressed:
+		var mouse := get_global_mouse_position()
+		if not dragging and mouse.distance_to(press_mouse) > DRAG_THRESHOLD:
+			begin_drag()
+		if dragging:
+			drag_to(mouse)
 
-# Every physics frame: once the mouse has moved far enough while pressed,
-# start dragging (and restock if this was a stock item); while dragging,
-# follow the mouse.
-func _physics_process(_delta: float) -> void:
-	if pressed and not dragging:
-		if get_global_mouse_position().distance_to(press_mouse) > DRAG_THRESHOLD:
-			dragging = true	
-			z_index = DRAG_Z
-			offset = global_position - get_global_mouse_position()
-			if is_stock:
-				restock()
-			on_drag_started()
-	if dragging:
-		global_position = get_global_mouse_position() + offset
+func begin_drag() -> void:
+	dragging = true
+	z_index = DRAG_Z
+	offset = global_position - press_mouse
+	if is_stock:
+		restock()
+	on_drag_started()
+
+func drag_to(to: Vector2) -> void:
+	global_position = to + offset
 
 # Called when the item is released after being dragged: hand off to whichever
 # DropZone it's over, or treat it as dropped outside any zone.
