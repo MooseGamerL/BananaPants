@@ -38,7 +38,7 @@ func _on_area_exited(area: Area2D) -> void:
 # and on release either finishes a drag (drop) or counts as a simple click.
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.pressed and MouseUtil.mouse_over(self):
+		if event.pressed and MouseUtil.topmost_under_mouse(self):
 			pressed = true
 			dragging = false
 			press_mouse = get_global_mouse_position()

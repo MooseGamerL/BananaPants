@@ -87,8 +87,8 @@ func roll_order() -> Dictionary:
 		if spoken_for.has(mod.item):
 			continue
 		spoken_for[mod.item] = true
-		order[mod.item] = mod.count
-	return order
+		_order[mod.item] = mod.count
+	return _order
 
 # Formats the current order into the multi-line text shown on the ticket.
 func ticket_text() -> String:
@@ -115,8 +115,7 @@ func on_item_wasted(cost: int) -> void:
 # plate, and starts the next order.
 func on_serve() -> void:
 	print("Serving")
-	if serve_button.pressed:
-		ding.play()
+	ding.play()
 	var stack := plate.stack_names()
 	var missing := missing_essentials(stack)
 	if not missing.is_empty():
@@ -171,7 +170,7 @@ func readable_list(bits: Array) -> String:
 func score_order(patties: Array, stack: Array, elapsed: float) -> int:
 	var cook := 0.0
 	for p in patties:
-		cook +=(side_score(p.top_state) + side_score(p.bottom_state)) / 2.0
+		cook += (side_score(p.top_state) + side_score(p.bottom_state)) / 2.0
 		if not patties.is_empty():
 			cook /= patties.size()
 

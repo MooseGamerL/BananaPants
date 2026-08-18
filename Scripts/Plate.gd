@@ -28,6 +28,8 @@ func remove(_item: Draggable) -> void:
 func serve_and_clear() -> void:
 	for item in items:
 		if is_instance_valid(item):
+			item.z_index = 0
+			item.plate = null
 			item.queue_free()
 	items.clear()
 	next_z = 1

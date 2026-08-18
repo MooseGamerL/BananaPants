@@ -5,6 +5,8 @@ extends Ingredient
 const BOTTOM_COLOUR := Color(0.943, 0.826, 0.633)
 const TOP_COLOUR := Color(0.882, 0.576, 0.286)
 
+const SPLIT_OFFSET := Vector2(45, 0)  # How far away the top half of the bun appears from bottom half
+
 @onready var visual: ColorRect = $ColorRect
 
 # Called when the player clicks on the bun.
@@ -13,10 +15,10 @@ func on_clicked() -> void:
 	if plate and ingredient_name == "bun":
 		split()
 
-# Splits a whole bun into a "bottom_bun" and a "top_bun"
+# Splits a whole bun into a "bottom_bun" and a "top_bun" 
 # Spawned copy slightly to the right, added to the same plate.
 func split() -> void:
-	var top := spawn_copy(global_position + Vector2(45, 0)) as Bun
+	var top := spawn_copy(plate.spot_beside(global_position, SPLIT_OFFSET)) as Bun
 	ingredient_name = "bottom_bun"
 	visual.color = BOTTOM_COLOUR
 	top.become_top_bun()

@@ -1,0 +1,333 @@
+[gd_scene load_steps=17 format=3 uid="uid://cd78picbchuph"]
+
+[ext_resource type="Script" uid="uid://dji1pwntmgy8" path="res://Scripts/DropZone.gd" id="1_bo1nx"]
+[ext_resource type="Script" uid="uid://b24dp7eegrrkh" path="res://Scripts/Patty.gd" id="1_jjgbg"]
+[ext_resource type="Script" uid="uid://belo210gfbhwn" path="res://Scripts/Main.gd" id="1_kry3j"]
+[ext_resource type="Script" uid="uid://bu1pdq377gy5n" path="res://Scripts/Plate.gd" id="2_8gbba"]
+[ext_resource type="Script" uid="uid://cgvi4rq1n10et" path="res://Scripts/Bun.gd" id="4_344ge"]
+[ext_resource type="Script" uid="uid://dwnfy5sy227wb" path="res://Scripts/Ingredient.gd" id="4_jjvhh"]
+[ext_resource type="AudioStream" uid="uid://o8lxx6be8pkg" path="res://Assets/11325622-reverse-cymbal-sound-effect-239951.mp3" id="6_21xkr"]
+[ext_resource type="AudioStream" uid="uid://cg5q7b13hnms8" path="res://Assets/linhmitto-bellding-254774.mp3" id="7_6bp64"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8gbba"]
+size = Vector2(20.0037, 19.9127)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jjgbg"]
+size = Vector2(198, 167)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_344ge"]
+size = Vector2(20.012, 19.4152)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jjvhh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bo1nx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kry3j"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6bp64"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_21xkr"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_kry3j")
+
+[node name="Plate" type="ColorRect" parent="."]
+offset_left = 199.0
+offset_top = 14.0
+offset_right = 389.0
+offset_bottom = 179.0
+color = Color(0.707967, 0.707967, 0.707967, 1)
+
+[node name="Plate" type="Area2D" parent="Plate"]
+position = Vector2(95.065, 82.725)
+scale = Vector2(9.49, 8.3)
+script = ExtResource("2_8gbba")
+type = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Plate/Plate"]
+position = Vector2(0.0018425, -0.0436745)
+shape = SubResource("RectangleShape2D_8gbba")
+
+[node name="Label" type="Label" parent="Plate"]
+layout_mode = 0
+offset_left = 73.0
+offset_top = 167.0
+offset_right = 113.0
+offset_bottom = 216.0
+text = "Plate
+"
+
+[node name="Grill" type="ColorRect" parent="."]
+offset_left = 412.0
+offset_top = 12.0
+offset_right = 610.0
+offset_bottom = 179.0
+color = Color(1, 0, 0, 1)
+
+[node name="GrillZone" type="Area2D" parent="Grill"]
+position = Vector2(99, 83.5)
+script = ExtResource("1_bo1nx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Grill/GrillZone"]
+shape = SubResource("RectangleShape2D_jjgbg")
+
+[node name="Label" type="Label" parent="Grill"]
+layout_mode = 0
+offset_left = 79.0
+offset_top = 170.0
+offset_right = 119.0
+offset_bottom = 219.0
+text = "Grill
+"
+
+[node name="Rubbish" type="ColorRect" parent="."]
+offset_left = 623.0
+offset_top = 12.0
+offset_right = 806.0
+offset_bottom = 179.0
+color = Color(0.381703, 0.381703, 0.381703, 1)
+
+[node name="Rubbish" type="Area2D" parent="Rubbish"]
+position = Vector2(91.61, 85.545)
+scale = Vector2(9.15, 8.55)
+script = ExtResource("1_bo1nx")
+type = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rubbish/Rubbish"]
+position = Vector2(-0.00601196, -0.29766)
+shape = SubResource("RectangleShape2D_344ge")
+
+[node name="Label" type="Label" parent="Rubbish"]
+layout_mode = 0
+offset_left = 55.0
+offset_top = 170.0
+offset_right = 118.0
+offset_bottom = 219.0
+text = "Rubbish
+"
+
+[node name="Bins" type="ColorRect" parent="."]
+offset_left = 11.0
+offset_top = 12.0
+offset_right = 168.0
+offset_bottom = 645.0
+
+[node name="Bun Bin" type="ColorRect" parent="Bins"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 11.525
+offset_right = 130.0
+offset_bottom = 132.525
+color = Color(0.762355, 0.471963, 0.286197, 1)
+
+[node name="Bun" type="Area2D" parent="Bins/Bun Bin"]
+position = Vector2(55, 60.51)
+scale = Vector2(2, 2)
+script = ExtResource("4_344ge")
+ingredient_name = "bun"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bins/Bun Bin/Bun"]
+shape = SubResource("RectangleShape2D_jjvhh")
+
+[node name="ColorRect" type="ColorRect" parent="Bins/Bun Bin/Bun"]
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+color = Color(0.882353, 0.576471, 0.286275, 1)
+
+[node name="Label" type="Label" parent="Bins/Bun Bin"]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 3.475
+offset_right = 77.0
+offset_bottom = 52.475
+text = "Bun
+"
+
+[node name="Patty Bin" type="ColorRect" parent="Bins"]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 143.81
+offset_right = 132.0
+offset_bottom = 255.81
+color = Color(1, 0.132984, 0.218307, 1)
+
+[node name="Patty" type="Area2D" parent="Bins/Patty Bin"]
+position = Vector2(55, 57.175)
+script = ExtResource("1_jjgbg")
+metadata/_edit_group_ = true
+
+[node name="Shape" type="CollisionShape2D" parent="Bins/Patty Bin/Patty"]
+scale = Vector2(2, 2)
+shape = SubResource("RectangleShape2D_bo1nx")
+
+[node name="CookTimer" type="Timer" parent="Bins/Patty Bin/Patty"]
+wait_time = 3.0
+autostart = true
+
+[node name="Visual" type="ColorRect" parent="Bins/Patty Bin/Patty"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.763202, 0, 0.133048, 1)
+
+[node name="Sizzle" type="AudioStreamPlayer" parent="Bins/Patty Bin/Patty"]
+stream = ExtResource("6_21xkr")
+
+[node name="Label" type="Label" parent="Bins/Patty Bin"]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 0.190002
+offset_right = 74.0
+offset_bottom = 23.19
+text = "Patty"
+
+[node name="Cheese Bin" type="ColorRect" parent="Bins"]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 277.0
+offset_right = 128.0
+offset_bottom = 385.0
+color = Color(1, 0.82143, 0.319012, 1)
+
+[node name="Cheese" type="Area2D" parent="Bins/Cheese Bin"]
+position = Vector2(52.415, 53.35)
+script = ExtResource("4_jjvhh")
+ingredient_name = "cheese"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bins/Cheese Bin/Cheese"]
+scale = Vector2(2, 2)
+shape = SubResource("RectangleShape2D_kry3j")
+
+[node name="ColorRect" type="ColorRect" parent="Bins/Cheese Bin/Cheese"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(1, 1, 0, 1)
+
+[node name="Label" type="Label" parent="Bins/Cheese Bin"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 3.0
+offset_right = 80.0
+offset_bottom = 52.0
+text = "Cheese
+"
+
+[node name="Ketchup Bin" type="ColorRect" parent="Bins"]
+layout_mode = 0
+offset_left = 20.625
+offset_top = 394.79
+offset_right = 130.625
+offset_bottom = 501.79
+color = Color(0.923624, 0.166633, 0, 1)
+
+[node name="Ketchup" type="Area2D" parent="Bins/Ketchup Bin"]
+position = Vector2(50, 50)
+scale = Vector2(1.0051, 0.935247)
+script = ExtResource("4_jjvhh")
+ingredient_name = "sauce"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bins/Ketchup Bin/Ketchup"]
+scale = Vector2(2, 2)
+shape = SubResource("RectangleShape2D_6bp64")
+
+[node name="ColorRect" type="ColorRect" parent="Bins/Ketchup Bin/Ketchup"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(1, 0, 0.113725, 1)
+
+[node name="Label" type="Label" parent="Bins/Ketchup Bin"]
+layout_mode = 0
+offset_left = 29.375
+offset_top = 1.20999
+offset_right = 75.375
+offset_bottom = 24.21
+text = "Sauce"
+
+[node name="Pickle Bin" type="ColorRect" parent="Bins"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 522.22
+offset_right = 133.0
+offset_bottom = 623.22
+color = Color(0, 1, 0, 1)
+
+[node name="Pickle" type="Area2D" parent="Bins/Pickle Bin"]
+position = Vector2(58.545, 50)
+script = ExtResource("4_jjvhh")
+ingredient_name = "pickle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bins/Pickle Bin/Pickle"]
+scale = Vector2(2, 2)
+shape = SubResource("RectangleShape2D_21xkr")
+
+[node name="ColorRect" type="ColorRect" parent="Bins/Pickle Bin/Pickle"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0, 0.788235, 0, 1)
+
+[node name="Label" type="Label" parent="Bins/Pickle Bin"]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 1.78003
+offset_right = 80.0
+offset_bottom = 24.78
+text = "Pickle"
+
+[node name="Counter" type="ColorRect" parent="."]
+offset_left = 351.0
+offset_top = 528.0
+offset_right = 829.0
+offset_bottom = 646.0
+scale = Vector2(1.0657, 1.09005)
+
+[node name="Serve Button" type="Button" parent="Counter"]
+layout_mode = 0
+offset_left = 402.552
+offset_top = 41.2825
+offset_right = 442.552
+offset_bottom = 81.2825
+
+[node name="Label" type="Label" parent="Counter/Serve Button"]
+layout_mode = 0
+offset_left = -2.021
+offset_top = -19.003
+offset_right = 40.979
+offset_bottom = 3.997
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Serve"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Counter/Serve Button"]
+stream = ExtResource("7_6bp64")
+
+[node name="Order Label" type="Label" parent="."]
+offset_left = 841.0
+offset_top = 90.0
+offset_right = 1109.0
+offset_bottom = 303.0
+theme_override_font_sizes/font_size = 35
+text = "Orders: None"
+
+[node name="Money Label" type="Label" parent="."]
+offset_left = 844.0
+offset_top = 36.0
+offset_right = 1070.0
+offset_bottom = 189.0
+theme_override_font_sizes/font_size = 35
+text = "Money: 0.00$
+"
+
+[node name="Result Label" type="Label" parent="."]
+offset_left = 205.0
+offset_top = 264.0
+offset_right = 453.0
+offset_bottom = 448.0
+theme_override_font_sizes/font_size = 28
