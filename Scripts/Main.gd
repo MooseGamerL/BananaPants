@@ -170,10 +170,21 @@ func readable_list(bits: Array) -> String:
 # updates the result label. Returns the total payout.
 func score_order(patties: Array, stack: Array, elapsed: float) -> int:
 	var cook := 0.0
+	print("--- PATTIES (%d) ---" % patties.size())
 	for p in patties:
-		cook += (side_score(p.top_state) + side_score(p.bottom_state)) / 2.0
-		if not patties.is_empty():
-			cook /= patties.size()
+		var top := side_score(p.top_state)
+		var bottom := side_score(p.bottom_state)
+		var scored := (top + bottom) / 2.0
+		cook += scored
+		print("  top=%-14s %.2f   bottom=%-14s %.2f   (down=%s)  ->  %.2f" % [
+			p.STATE_NAMES[p.top_state], top,
+			p.STATE_NAMES[p.bottom_state], bottom,
+			"top" if p.is_flipped else "bottom", scored])
+	if not patties.is_empty():
+		cook /= patties.size()
+		print("  cook = %.2f  (sum %.2f over %d)" % [cook, cook * patties.size(), patties.size()])
+	else:
+		print("  cook = 0.00  (no patty on the plate)")
 
 	var assembly := assembly_score(stack)
 	
@@ -184,11 +195,10 @@ func score_order(patties: Array, stack: Array, elapsed: float) -> int:
 	
 	var payout : int = int(round(BASE_PRICE * cook * assembly)) + speed_bonus
 	
-	print("<SERVE> cook=%.2f assembly=%.2f time=%.1fs speed=%d => $%d (wanted %s, got %s)" % [
+	print("--- SERVE --- cook=%.2f assembly=%.2f time=%.1fs speed=%d => $%d (wanted %s, got %s)" % [
 		cook, assembly, elapsed, speed_bonus, payout, str(order), str(counts(stack))])
 	show_result(cook, assembly, elapsed, speed_bonus, payout)
 	return payout
-
 
 # Scores how closely the plate's item counts match the order (0-1), then
 # applies a penalty if the bottom/top buns aren't in the right place.

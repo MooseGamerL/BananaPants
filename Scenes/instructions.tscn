@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://d36cmen5j4xeg" path="res://Scripts/Instructions.gd" id="1_8p7yn"]
 
 [node name="Instructions" type="CanvasLayer"]
+process_mode = 3
 script = ExtResource("1_8p7yn")
 
 [node name="Dim" type="ColorRect" parent="."]
@@ -45,6 +46,19 @@ horizontal_alignment = 1
 
 [node name="Body" type="RichTextLabel" parent="Panel/Margin/Rules"]
 layout_mode = 2
+text = "						Click and drag ingredients out of the bins and assemble them on the plates.
+
+Drag patties onto the grill to cook them. They will play a noise every time they are cooked another stage (raw->rare->medium->well->burnt) once one side is cooked, click to flip.
+
+Buns arrive whole, to seperate the top from the bottom half, click on the bun while its on the plate.
+
+On the right is the ticket, which shows what the customer wants. The order of the fillings doesn't matter but the top bun has to be on the top, and the bottom bun has to be on the bottom.
+
+If you make any mistakes, you can throw an ingredient in the rubbish, but it will cost you.
+
+Once the burger is done, click the serve button and get paid. Money gets cooked off doneness of the patty, matching of the order, and speed.
+"
+fit_content = true
 
 [node name="Start" type="Button" parent="Panel/Margin/Rules"]
 layout_mode = 2
