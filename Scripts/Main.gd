@@ -43,6 +43,7 @@ const MAX_SPEED_BONUS := 3
 @onready var money_label: Label = $"Money Label"
 @onready var result_label: Label = $"Result Label"
 @onready var order_label: Label = $"Order Label"
+@onready var instructions: Instructions = $Instructions
 
 var money := 0
 var customer := 1
@@ -50,14 +51,14 @@ var order_start_ms := 0
 var order := BASE_ORDER.duplicate()
 
 # Wire up the serve button, register any draggables already
-# in the scene, refresh the UI, and start the first order.
+# in the scene, refresh the UI, wait until instructions are dismissed to start.
 func _ready() -> void:
 	serve_button.pressed.connect(on_serve)
-	order_start_ms = Time.get_ticks_msec()
+	instructions.dismissed.connect(start_order)
 	for item in get_tree().get_nodes_in_group("draggables"):
 		register(item)
 	update_money()
-	start_order()
+	
 
 # Hooks up an item's signals so Main is notified when it's wasted, and so
 # any future copies spawned from it also get registered automatically.

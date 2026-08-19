@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cd78picbchuph"]
+[gd_scene load_steps=18 format=3 uid="uid://cd78picbchuph"]
 
 [ext_resource type="Script" uid="uid://dji1pwntmgy8" path="res://Scripts/DropZone.gd" id="1_bo1nx"]
 [ext_resource type="Script" uid="uid://b24dp7eegrrkh" path="res://Scripts/Patty.gd" id="1_jjgbg"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://dwnfy5sy227wb" path="res://Scripts/Ingredient.gd" id="4_jjvhh"]
 [ext_resource type="AudioStream" uid="uid://o8lxx6be8pkg" path="res://Assets/11325622-reverse-cymbal-sound-effect-239951.mp3" id="6_21xkr"]
 [ext_resource type="AudioStream" uid="uid://cg5q7b13hnms8" path="res://Assets/linhmitto-bellding-254774.mp3" id="7_6bp64"]
+[ext_resource type="PackedScene" uid="uid://cjft0qkql74o4" path="res://Scenes/instructions.tscn" id="9_ynf5e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8gbba"]
 size = Vector2(20.0037, 19.9127)
@@ -331,3 +332,6 @@ offset_top = 264.0
 offset_right = 453.0
 offset_bottom = 448.0
 theme_override_font_sizes/font_size = 28
+
+[node name="Instructions" parent="." instance=ExtResource("9_ynf5e")]
+visible = false
